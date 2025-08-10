@@ -140,6 +140,10 @@ function initSearch() {
     // Add autocomplete functionality
     searchInput.addEventListener('input', debounce(async function() {
         const query = this.value.trim();
+        
+        // Clear stored symbol when user manually types
+        this.removeAttribute('data-selected-symbol');
+        
         if (query.length < 2) return;
         
         try {
@@ -164,14 +168,23 @@ function initSearch() {
                 return;
             }
             
-            // Extract symbol from "SYMBOL - Company Name" format if present
-            let symbol = input;
-            if (input.includes(' - ')) {
-                symbol = input.split(' - ')[0];
+            // Use stored symbol if available (from search suggestions)
+            let symbol = searchInput.getAttribute('data-selected-symbol');
+            
+            // If no stored symbol, extract from input format
+            if (!symbol) {
+                if (input.includes(' - ')) {
+                    symbol = input.split(' - ')[0];
+                } else {
+                    symbol = input;
+                }
             }
             
-            // Update the input with just the symbol
+            // Update the input with just the symbol for submission
             searchInput.value = symbol.toUpperCase();
+            
+            // Clear the stored symbol
+            searchInput.removeAttribute('data-selected-symbol');
         });
     }
 }
@@ -227,6 +240,8 @@ function showSearchSuggestions(suggestions, inputElement) {
         });
         
         suggestionItem.addEventListener('click', function() {
+            // Store the symbol in a data attribute for form submission
+            inputElement.setAttribute('data-selected-symbol', stock.symbol);
             inputElement.value = stock.display;
             removeSearchSuggestions();
             inputElement.focus();

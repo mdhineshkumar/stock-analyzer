@@ -713,4 +713,41 @@ body {
         flex-direction: column;
         text-align: center;
     }
+}
+
+/* Global Coverage Section Styling */
+.global-coverage-section {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+}
+
+.coverage-card {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.coverage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.coverage-icon {
+    color: var(--primary-color);
+}
+
+.coverage-highlight {
+    border: 3px solid var(--warning-color);
+    box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+}
+
+.coverage-highlight h4 {
+    color: var(--dark-color);
+}
+
+.coverage-highlight p {
+    color: var(--dark-color);
+    font-size: 1.1rem;
 } 
