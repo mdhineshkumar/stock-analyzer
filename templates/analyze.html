@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze Stocks | Stock Analyzer Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line me-2"></i>
+                Stock Analyzer Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/analyze"><i class="fas fa-search me-1"></i>Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-5">
+                        <h1 class="display-4 fw-bold text-primary mb-3">
+                            <i class="fas fa-search me-3"></i>Analyze Any Stock
+                        </h1>
+                        <p class="lead text-muted">
+                            Get comprehensive analysis and AI-powered recommendations for any publicly traded stock
+                        </p>
+                    </div>
+
+                    <!-- Search Form -->
+                    <div class="search-card">
+                        <form action="/analyze" method="POST" class="needs-validation" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label for="symbol" class="form-label fw-bold">
+                                        <i class="fas fa-chart-line me-2"></i>Stock Symbol
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control form-control-lg" 
+                                           id="symbol" 
+                                           name="symbol" 
+                                           placeholder="Enter stock symbol (e.g., AAPL, MSFT, GOOGL)" 
+                                           required
+                                           pattern="[A-Za-z]{1,5}"
+                                           maxlength="5">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid stock symbol (1-5 letters).
+                                    </div>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the stock ticker symbol (e.g., AAPL for Apple Inc.)
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="period" class="form-label fw-bold">
+                                        <i class="fas fa-calendar me-2"></i>Time Period
+                                    </label>
+                                    <select class="form-select form-select-lg" id="period" name="period">
+                                        <option value="1mo">1 Month</option>
+                                        <option value="3mo">3 Months</option>
+                                        <option value="6mo">6 Months</option>
+                                        <option value="1y" selected>1 Year</option>
+                                        <option value="2y">2 Years</option>
+                                        <option value="5y">5 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <i class="fas fa-chart-bar me-2"></i>Analyze Stock
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Popular Stocks Quick Access -->
+                    <div class="mt-5">
+                        <h3 class="text-center mb-4">
+                            <i class="fas fa-fire me-2 text-warning"></i>Popular Stocks
+                        </h3>
+                        <div class="row g-3">
+                            <div class="col-md-2 col-4">
+                                <a href="/stock/AAPL" class="btn btn-outline-primary w-100">
+                                    <strong>AAPL</strong><br>
+                                    <small>Apple</small>
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <a href="/stock/MSFT" class="btn btn-outline-primary w-100">
+                                    <strong>MSFT</strong><br>
+                                    <small>Microsoft</small>
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <a href="/stock/GOOGL" class="btn btn-outline-primary w-100">
+                                    <strong>GOOGL</strong><br>
+                                    <small>Alphabet</small>
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <a href="/stock/AMZN" class="btn btn-outline-primary w-100">
+                                    <strong>AMZN</strong><br>
+                                    <small>Amazon</small>
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <a href="/stock/TSLA" class="btn btn-outline-primary w-100">
+                                    <strong>TSLA</strong><br>
+                                    <small>Tesla</small>
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <a href="/stock/NVDA" class="btn btn-outline-primary w-100">
+                                    <strong>NVDA</strong><br>
+                                    <small>NVIDIA</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="mt-5">
+                        <h3 class="text-center mb-4">
+                            <i class="fas fa-star me-2 text-warning"></i>What You'll Get
+                        </h3>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="feature-item text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-chart-line fa-2x text-primary"></i>
+                                    </div>
+                                    <h5>Technical Analysis</h5>
+                                    <p class="text-muted">RSI, MACD, Bollinger Bands, Moving Averages</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="feature-item text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-robot fa-2x text-success"></i>
+                                    </div>
+                                    <h5>AI Recommendations</h5>
+                                    <p class="text-muted">Smart buy/sell signals with confidence scores</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="feature-item text-center">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-chart-area fa-2x text-info"></i>
+                                    </div>
+                                    <h5>Interactive Charts</h5>
+                                    <p class="text-muted">Professional-grade charts and visualizations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">
+                <i class="fas fa-chart-line me-2"></i>
+                Stock Analyzer Pro - Professional Stock Analysis Tools
+            </p>
+            <small class="text-muted">
+                Disclaimer: This tool is for educational purposes only. 
+                Always consult with a financial advisor before making investment decisions.
+            </small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html> 

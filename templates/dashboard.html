@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Dashboard - Stock Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>📈 Stock Analyzer Pro</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('analyze') }}">Analyze</a></li>
+                <li><a href="{{ url_for('dashboard') }}" class="active">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>Market Overview Dashboard</h1>
+            <p>Real-time analysis of popular stocks and market trends</p>
+        </header>
+
+        <div class="market-overview">
+            <div class="overview-grid">
+                {% for stock in market_overview %}
+                <div class="stock-card">
+                    <div class="stock-header">
+                        <h3>{{ stock.symbol }}</h3>
+                        <span class="price">${{ stock.current_price }}</span>
+                    </div>
+                    <div class="stock-details">
+                        <div class="price-change {% if stock.price_change >= 0 %}positive{% else %}negative{% endif %}">
+                            {{ stock.price_change_pct }}%
+                        </div>
+                        <div class="recommendation {{ stock.recommendation.lower() }}">
+                            {{ stock.recommendation }}
+                        </div>
+                    </div>
+                    <div class="stock-metrics">
+                        <div class="metric">
+                            <span class="label">Signal Strength:</span>
+                            <span class="value">{{ stock.signal_strength }}%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Volume:</span>
+                            <span class="value">{{ "{:,}".format(stock.volume) }}</span>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('stock_detail', symbol=stock.symbol) }}" class="btn btn-primary">
+                        View Details
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="market-insights">
+            <h2>Market Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>📊 Technical Analysis</h3>
+                    <p>Our advanced algorithms analyze multiple technical indicators to generate buy/sell signals with confidence scores.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>🎯 Risk Management</h3>
+                    <p>Comprehensive risk metrics including volatility, Sharpe ratio, and maximum drawdown analysis.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>📈 Market Sentiment</h3>
+                    <p>Real-time market sentiment analysis using fundamental and technical indicators.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Stock Analyzer Pro. Built with advanced financial algorithms.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 

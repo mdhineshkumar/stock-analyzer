@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Stock Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>📈 Stock Analyzer Pro</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('analyze') }}">Analyze</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="error-container">
+            <div class="error-icon">⚠️</div>
+            <h1>Oops! Something went wrong</h1>
+            <p class="error-message">{{ error }}</p>
+            
+            {% if symbol %}
+            <div class="error-details">
+                <p><strong>Stock Symbol:</strong> {{ symbol }}</p>
+                <p>This could be due to:</p>
+                <ul>
+                    <li>Invalid stock symbol</li>
+                    <li>Market data temporarily unavailable</li>
+                    <li>Network connectivity issues</li>
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="error-actions">
+                <a href="{{ url_for('analyze') }}" class="btn btn-primary">Try Another Stock</a>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Go Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Stock Analyzer Pro. Built with advanced financial algorithms.</p>
+    </footer>
+</body>
+</html> 

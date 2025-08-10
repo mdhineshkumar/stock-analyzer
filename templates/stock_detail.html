@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ symbol }} - Stock Analysis | Stock Analyzer Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line me-2"></i>
+                Stock Analyzer Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analyze"><i class="fas fa-search me-1"></i>Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Stock Header -->
+    <section class="stock-header py-4 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold text-primary mb-2">
+                        <i class="fas fa-chart-line me-3"></i>{{ symbol }}
+                    </h1>
+                    <p class="lead mb-0">
+                        <span class="text-muted">Last Updated:</span> {{ analysis.last_updated }}
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="price-display">
+                        <h2 class="display-6 fw-bold text-success mb-1">${{ analysis.current_price }}</h2>
+                        <div class="price-change">
+                            {% if analysis.price_change >= 0 %}
+                                <span class="text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>
+                                    +${{ analysis.price_change }} (+{{ analysis.price_change_pct }}%)
+                                </span>
+                            {% else %}
+                                <span class="text-danger">
+                                    <i class="fas fa-arrow-down me-1"></i>
+                                    ${{ analysis.price_change }} ({{ analysis.price_change_pct }}%)
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Analysis Section -->
+    <section class="analysis-section py-5">
+        <div class="container">
+            <!-- Recommendation Card -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="recommendation-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 class="mb-3">
+                                    <i class="fas fa-lightbulb me-2 text-warning"></i>
+                                    AI Recommendation
+                                </h3>
+                                <div class="recommendation-badge mb-3">
+                                    {% if analysis.recommendation == 'BUY' %}
+                                        <span class="badge bg-success fs-5 px-4 py-2">
+                                            <i class="fas fa-thumbs-up me-2"></i>STRONG BUY
+                                        </span>
+                                    {% elif analysis.recommendation == 'SELL' %}
+                                        <span class="badge bg-danger fs-5 px-4 py-2">
+                                            <i class="fas fa-thumbs-down me-2"></i>STRONG SELL
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-warning fs-5 px-4 py-2">
+                                            <i class="fas fa-hand me-2"></i>HOLD
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <p class="mb-0">
+                                    <strong>Signal Strength:</strong> 
+                                    <span class="text-primary fw-bold">{{ analysis.signal_strength }}%</span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="signal-breakdown">
+                                    <h5 class="mb-3">Signal Breakdown:</h5>
+                                    {% for indicator, signal in analysis.signals.items() %}
+                                        <div class="signal-item d-flex justify-content-between align-items-center mb-2">
+                                            <span class="signal-name">{{ indicator.replace('_', ' ').title() }}</span>
+                                            {% if signal == 'BUY' %}
+                                                <span class="badge bg-success">{{ signal }}</span>
+                                            {% elif signal == 'SELL' %}
+                                                <span class="badge bg-danger">{{ signal }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ signal }}</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h3 class="mb-4">
+                        <i class="fas fa-chart-area me-2 text-primary"></i>
+                        Technical Analysis Charts
+                    </h3>
+                </div>
+                
+                <!-- Price Chart -->
+                <div class="col-12 mb-4">
+                    <div class="chart-container">
+                        <div id="price-chart"></div>
+                    </div>
+                </div>
+                
+                <!-- RSI and MACD Charts -->
+                <div class="col-md-6 mb-4">
+                    <div class="chart-container">
+                        <div id="rsi-chart"></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="chart-container">
+                        <div id="macd-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics Row -->
+            <div class="row g-4">
+                <!-- Volatility Metrics -->
+                <div class="col-md-6">
+                    <div class="metrics-card">
+                        <h4 class="mb-3">
+                            <i class="fas fa-chart-line me-2 text-info"></i>
+                            Volatility Metrics
+                        </h4>
+                        {% if analysis.volatility %}
+                            <div class="metric-item">
+                                <span class="metric-label">Daily Volatility:</span>
+                                <span class="metric-value">{{ "%.4f"|format(analysis.volatility.daily_volatility) }}</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Annualized Volatility:</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.volatility.annualized_volatility * 100) }}%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Max Drawdown:</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.volatility.max_drawdown * 100) }}%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">VaR (95%):</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.volatility.var_95 * 100) }}%</span>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">Volatility data not available</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Risk Metrics -->
+                <div class="col-md-6">
+                    <div class="metrics-card">
+                        <h4 class="mb-3">
+                            <i class="fas fa-shield-alt me-2 text-success"></i>
+                            Risk Metrics
+                        </h4>
+                        {% if analysis.risk_metrics %}
+                            <div class="metric-item">
+                                <span class="metric-label">Sharpe Ratio:</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.risk_metrics.sharpe_ratio) }}</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Sortino Ratio:</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.risk_metrics.sortino_ratio) }}</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Calmar Ratio:</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.risk_metrics.calmar_ratio) }}</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Total Return:</span>
+                                <span class="metric-value">{{ "%.2f"|format(analysis.risk_metrics.total_return) }}%</span>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">Risk metrics not available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Sentiment -->
+            {% if sentiment and 'error' not in sentiment %}
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="sentiment-card">
+                        <h4 class="mb-3">
+                            <i class="fas fa-chart-pie me-2 text-warning"></i>
+                            Market Sentiment
+                        </h4>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="sentiment-item">
+                                    <span class="sentiment-label">Market Cap:</span>
+                                    <span class="sentiment-value">
+                                        {% if sentiment.market_cap != 'N/A' %}
+                                            ${{ "{:,.0f}".format(sentiment.market_cap) }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="sentiment-item">
+                                    <span class="sentiment-label">P/E Ratio:</span>
+                                    <span class="sentiment-value">{{ sentiment.pe_ratio }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="sentiment-item">
+                                    <span class="sentiment-label">Forward P/E:</span>
+                                    <span class="sentiment-value">{{ sentiment.forward_pe }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="sentiment-item">
+                                    <span class="sentiment-label">Beta:</span>
+                                    <span class="sentiment-value">{{ sentiment.beta }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">
+                <i class="fas fa-chart-line me-2"></i>
+                Stock Analyzer Pro - Professional Stock Analysis Tools
+            </p>
+            <small class="text-muted">
+                Disclaimer: This tool is for educational purposes only. 
+                Always consult with a financial advisor before making investment decisions.
+            </small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Render Charts -->
+    <script>
+        // Price Chart
+        {% if charts.price %}
+            var priceChartData = {{ charts.price | safe }};
+            Plotly.newPlot('price-chart', priceChartData.data, priceChartData.layout);
+        {% endif %}
+        
+        // RSI Chart
+        {% if charts.rsi %}
+            var rsiChartData = {{ charts.rsi | safe }};
+            Plotly.newPlot('rsi-chart', rsiChartData.data, rsiChartData.layout);
+        {% endif %}
+        
+        // MACD Chart
+        {% if charts.macd %}
+            var macdChartData = {{ charts.macd | safe }};
+            Plotly.newPlot('macd-chart', macdChartData.data, macdChartData.layout);
+        {% endif %}
+    </script>
+</body>
+</html> 
