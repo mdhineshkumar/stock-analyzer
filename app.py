@@ -11,6 +11,7 @@ import json
 import pandas as pd
 from datetime import datetime, timedelta
 import yfinance as yf
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
@@ -91,11 +92,44 @@ def search_stocks():
     # Popular stocks for demo (in real app, you'd use a proper search API)
     popular_stocks = [
         'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'NFLX',
-        'AMD', 'INTC', 'CRM', 'ORCL', 'ADBE', 'PYPL', 'SQ', 'UBER'
+        'AMD', 'INTC', 'CRM', 'ORCL', 'ADBE', 'PYPL', 'SQ', 'UBER',
+        'JPM', 'BAC', 'WMT', 'HD', 'JNJ', 'PG', 'UNH', 'MA', 'V', 'DIS'
     ]
     
     results = [stock for stock in popular_stocks if query in stock]
     return jsonify(results[:10])
+
+@app.route('/api/market-overview')
+def api_market_overview():
+    """API endpoint for market overview data"""
+    popular_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA']
+    market_data = []
+    
+    for symbol in popular_symbols:
+        try:
+            analysis = analyzer.analyze_stock(symbol, '1mo')
+            if 'error' not in analysis:
+                market_data.append({
+                    'symbol': analysis['symbol'],
+                    'price': analysis['current_price'],
+                    'change': analysis['price_change_pct'],
+                    'recommendation': analysis['recommendation'],
+                    'signal_strength': analysis['signal_strength']
+                })
+        except:
+            continue
+    
+    return jsonify(market_data)
+
+@app.route('/about')
+def about():
+    """About page"""
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    """Contact page"""
+    return render_template('contact.html')
 
 @app.route('/dashboard')
 def dashboard():
@@ -249,4 +283,5 @@ def internal_error(error):
     return render_template('500.html'), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000) 
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False) 

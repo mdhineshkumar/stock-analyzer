@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Stock Analyzer Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>📈 Stock Analyzer Pro</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('analyze') }}">Analyze</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>About Stock Analyzer Pro</h1>
+            <p>Advanced stock analysis powered by cutting-edge algorithms</p>
+        </header>
+
+        <div class="about-content">
+            <section class="about-section">
+                <h2>🎯 Our Mission</h2>
+                <p>Stock Analyzer Pro is designed to democratize professional-grade stock analysis. We believe that every investor, regardless of experience level, should have access to sophisticated technical analysis tools that were once only available to institutional investors.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>🚀 What We Offer</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3>📊 Technical Analysis</h3>
+                        <p>Comprehensive analysis using multiple technical indicators including RSI, MACD, Bollinger Bands, and Moving Averages.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>💡 Smart Signals</h3>
+                        <p>AI-powered buy/sell recommendations based on multiple technical indicators with confidence scores.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>📈 Risk Management</h3>
+                        <p>Advanced risk metrics including volatility analysis, Sharpe ratio, and maximum drawdown calculations.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🔄 Real-time Data</h3>
+                        <p>Live market data from reliable sources, ensuring you always have the most current information.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-section">
+                <h2>🔬 Our Technology</h2>
+                <p>Built with modern web technologies and powered by sophisticated financial algorithms:</p>
+                <ul class="tech-list">
+                    <li><strong>Backend:</strong> Python Flask with advanced financial libraries</li>
+                    <li><strong>Data Analysis:</strong> Pandas, NumPy, and specialized technical analysis tools</li>
+                    <li><strong>Charts:</strong> Interactive Plotly visualizations</li>
+                    <li><strong>Data Sources:</strong> Yahoo Finance API integration</li>
+                    <li><strong>Deployment:</strong> Cloud-native architecture on Render</li>
+                </ul>
+            </section>
+
+            <section class="about-section">
+                <h2>📚 How It Works</h2>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Enter Stock Symbol</h3>
+                            <p>Simply type in any stock symbol (e.g., AAPL, MSFT, GOOGL)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Advanced Analysis</h3>
+                            <p>Our algorithms analyze multiple technical indicators and market data</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Get Recommendations</h3>
+                            <p>Receive buy/sell signals with confidence scores and detailed analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-section">
+                <h2>⚠️ Disclaimer</h2>
+                <p>Stock Analyzer Pro provides educational and informational content only. Our analysis and recommendations are based on technical indicators and historical data, but past performance does not guarantee future results. Always conduct your own research and consider consulting with a financial advisor before making investment decisions.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Stock Analyzer Pro. Built with advanced financial algorithms.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 

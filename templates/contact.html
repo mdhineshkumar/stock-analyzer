@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Stock Analyzer Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>📈 Stock Analyzer Pro</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('analyze') }}">Analyze</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>Contact Us</h1>
+            <p>Get in touch with our team for support and feedback</p>
+        </header>
+
+        <div class="contact-content">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>📞 Get In Touch</h2>
+                    <p>Have questions about our stock analysis tools? Want to provide feedback? We'd love to hear from you!</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <h3>📧 Email Support</h3>
+                            <p>For technical support and general inquiries:</p>
+                            <a href="mailto:support@stockanalyzerpro.com" class="contact-link">support@stockanalyzerpro.com</a>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <h3>🐛 Bug Reports</h3>
+                            <p>Found a bug or technical issue?</p>
+                            <a href="mailto:bugs@stockanalyzerpro.com" class="contact-link">bugs@stockanalyzerpro.com</a>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <h3>💡 Feature Requests</h3>
+                            <p>Have ideas for new features?</p>
+                            <a href="mailto:features@stockanalyzerpro.com" class="contact-link">features@stockanalyzerpro.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h2>📝 Send Us a Message</h2>
+                    <form class="form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="feedback">Feedback</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell us how we can help you..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <h2>❓ Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>How accurate are the buy/sell signals?</h3>
+                        <p>Our signals are based on multiple technical indicators and historical data analysis. While we provide confidence scores, no analysis is 100% accurate. Always use multiple sources and consider consulting a financial advisor.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>What data sources do you use?</h3>
+                        <p>We primarily use Yahoo Finance API for real-time market data, which provides comprehensive stock information including price, volume, and fundamental data.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Is my data secure?</h3>
+                        <p>Yes! We don't store any personal financial information. All analysis is performed in real-time using publicly available market data.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Can I use this for day trading?</h3>
+                        <p>While our tools can be used for various trading strategies, day trading requires significant experience and risk management. Our analysis is educational and should be part of a broader investment strategy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Stock Analyzer Pro. Built with advanced financial algorithms.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 
