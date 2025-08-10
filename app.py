@@ -85,19 +85,87 @@ def api_stock_data(symbol):
 @app.route('/api/search')
 def search_stocks():
     """Search for stocks by name or symbol"""
-    query = request.args.get('q', '').upper()
+    query = request.args.get('q', '').lower()
     if len(query) < 2:
         return jsonify([])
     
-    # Popular stocks for demo (in real app, you'd use a proper search API)
-    popular_stocks = [
-        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'NFLX',
-        'AMD', 'INTC', 'CRM', 'ORCL', 'ADBE', 'PYPL', 'SQ', 'UBER',
-        'JPM', 'BAC', 'WMT', 'HD', 'JNJ', 'PG', 'UNH', 'MA', 'V', 'DIS'
+    # Stock database with names and symbols
+    stock_database = [
+        {'symbol': 'AAPL', 'name': 'Apple Inc.'},
+        {'symbol': 'MSFT', 'name': 'Microsoft Corporation'},
+        {'symbol': 'GOOGL', 'name': 'Alphabet Inc.'},
+        {'symbol': 'AMZN', 'name': 'Amazon.com Inc.'},
+        {'symbol': 'TSLA', 'name': 'Tesla Inc.'},
+        {'symbol': 'META', 'name': 'Meta Platforms Inc.'},
+        {'symbol': 'NVDA', 'name': 'NVIDIA Corporation'},
+        {'symbol': 'NFLX', 'name': 'Netflix Inc.'},
+        {'symbol': 'AMD', 'name': 'Advanced Micro Devices'},
+        {'symbol': 'INTC', 'name': 'Intel Corporation'},
+        {'symbol': 'CRM', 'name': 'Salesforce Inc.'},
+        {'symbol': 'ORCL', 'name': 'Oracle Corporation'},
+        {'symbol': 'ADBE', 'name': 'Adobe Inc.'},
+        {'symbol': 'PYPL', 'name': 'PayPal Holdings'},
+        {'symbol': 'SQ', 'name': 'Block Inc.'},
+        {'symbol': 'UBER', 'name': 'Uber Technologies'},
+        {'symbol': 'JPM', 'name': 'JPMorgan Chase & Co.'},
+        {'symbol': 'BAC', 'name': 'Bank of America Corp.'},
+        {'symbol': 'WMT', 'name': 'Walmart Inc.'},
+        {'symbol': 'HD', 'name': 'The Home Depot Inc.'},
+        {'symbol': 'JNJ', 'name': 'Johnson & Johnson'},
+        {'symbol': 'PG', 'name': 'Procter & Gamble Co.'},
+        {'symbol': 'UNH', 'name': 'UnitedHealth Group Inc.'},
+        {'symbol': 'MA', 'name': 'Mastercard Inc.'},
+        {'symbol': 'V', 'name': 'Visa Inc.'},
+        {'symbol': 'DIS', 'name': 'The Walt Disney Company'},
+        {'symbol': 'KO', 'name': 'The Coca-Cola Company'},
+        {'symbol': 'PEP', 'name': 'PepsiCo Inc.'},
+        {'symbol': 'ABT', 'name': 'Abbott Laboratories'},
+        {'symbol': 'TMO', 'name': 'Thermo Fisher Scientific'},
+        {'symbol': 'AVGO', 'name': 'Broadcom Inc.'},
+        {'symbol': 'QCOM', 'name': 'QUALCOMM Incorporated'},
+        {'symbol': 'TXN', 'name': 'Texas Instruments'},
+        {'symbol': 'HON', 'name': 'Honeywell International'},
+        {'symbol': 'LMT', 'name': 'Lockheed Martin Corporation'},
+        {'symbol': 'RTX', 'name': 'Raytheon Technologies'},
+        {'symbol': 'CAT', 'name': 'Caterpillar Inc.'},
+        {'symbol': 'DE', 'name': 'Deere & Company'},
+        {'symbol': 'BA', 'name': 'The Boeing Company'},
+        {'symbol': 'GE', 'name': 'General Electric Company'},
+        {'symbol': 'IBM', 'name': 'International Business Machines'},
+        {'symbol': 'CSCO', 'name': 'Cisco Systems Inc.'},
+        {'symbol': 'VZ', 'name': 'Verizon Communications'},
+        {'symbol': 'T', 'name': 'AT&T Inc.'},
+        {'symbol': 'CMCSA', 'name': 'Comcast Corporation'},
+        {'symbol': 'CHTR', 'name': 'Charter Communications'},
+        {'symbol': 'NFLX', 'name': 'Netflix Inc.'},
+        {'symbol': 'SPOT', 'name': 'Spotify Technology'},
+        {'symbol': 'ZM', 'name': 'Zoom Video Communications'},
+        {'symbol': 'SHOP', 'name': 'Shopify Inc.'},
+        {'symbol': 'ROKU', 'name': 'Roku Inc.'},
+        {'symbol': 'SNAP', 'name': 'Snap Inc.'},
+        {'symbol': 'TWTR', 'name': 'Twitter Inc.'},
+        {'symbol': 'PINS', 'name': 'Pinterest Inc.'},
+        {'symbol': 'LYFT', 'name': 'Lyft Inc.'},
+        {'symbol': 'DASH', 'name': 'DoorDash Inc.'},
+        {'symbol': 'ABNB', 'name': 'Airbnb Inc.'},
+        {'symbol': 'SNOW', 'name': 'Snowflake Inc.'},
+        {'symbol': 'PLTR', 'name': 'Palantir Technologies'},
+        {'symbol': 'COIN', 'name': 'Coinbase Global Inc.'},
+        {'symbol': 'HOOD', 'name': 'Robinhood Markets Inc.'}
     ]
     
-    results = [stock for stock in popular_stocks if query in stock]
-    return jsonify(results[:10])
+    # Search by both symbol and name
+    results = []
+    for stock in stock_database:
+        if (query in stock['symbol'].lower() or 
+            query in stock['name'].lower()):
+            results.append({
+                'symbol': stock['symbol'],
+                'name': stock['name'],
+                'display': f"{stock['symbol']} - {stock['name']}"
+            })
+    
+    return jsonify(results[:15])
 
 @app.route('/api/market-overview')
 def api_market_overview():

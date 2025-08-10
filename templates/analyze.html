@@ -55,22 +55,21 @@
                             <div class="row g-3">
                                 <div class="col-md-8">
                                     <label for="symbol" class="form-label fw-bold">
-                                        <i class="fas fa-chart-line me-2"></i>Stock Symbol
+                                        <i class="fas fa-chart-line me-2"></i>Stock Symbol or Name
                                     </label>
                                     <input type="text" 
                                            class="form-control form-control-lg" 
                                            id="symbol" 
                                            name="symbol" 
-                                           placeholder="Enter stock symbol (e.g., AAPL, MSFT, GOOGL)" 
+                                           placeholder="Search by symbol or company name (e.g., AAPL, Apple, Microsoft)" 
                                            required
-                                           pattern="[A-Za-z]{1,5}"
-                                           maxlength="5">
+                                           maxlength="50">
                                     <div class="invalid-feedback">
-                                        Please enter a valid stock symbol (1-5 letters).
+                                        Please enter a stock symbol or company name.
                                     </div>
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>
-                                        Enter the stock ticker symbol (e.g., AAPL for Apple Inc.)
+                                        Search by stock symbol (AAPL) or company name (Apple Inc.)
                                     </div>
                                 </div>
                                 <div class="col-md-4">

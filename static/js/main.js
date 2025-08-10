@@ -157,11 +157,21 @@ function initSearch() {
     const searchForm = searchInput.closest('form');
     if (searchForm) {
         searchForm.addEventListener('submit', function(e) {
-            const symbol = searchInput.value.trim().toUpperCase();
-            if (!symbol) {
+            const input = searchInput.value.trim();
+            if (!input) {
                 e.preventDefault();
-                showAlert('Please enter a stock symbol', 'warning');
+                showAlert('Please enter a stock symbol or name', 'warning');
+                return;
             }
+            
+            // Extract symbol from "SYMBOL - Company Name" format if present
+            let symbol = input;
+            if (input.includes(' - ')) {
+                symbol = input.split(' - ')[0];
+            }
+            
+            // Update the input with just the symbol
+            searchInput.value = symbol.toUpperCase();
         });
     }
 }
@@ -192,7 +202,7 @@ function showSearchSuggestions(suggestions, inputElement) {
         overflow-y: auto;
     `;
     
-    suggestions.forEach(symbol => {
+    suggestions.forEach(stock => {
         const suggestionItem = document.createElement('div');
         suggestionItem.className = 'suggestion-item';
         suggestionItem.style.cssText = `
@@ -201,7 +211,12 @@ function showSearchSuggestions(suggestions, inputElement) {
             border-bottom: 1px solid #f0f0f0;
             transition: background-color 0.2s;
         `;
-        suggestionItem.textContent = symbol;
+        
+        // Display both symbol and company name
+        suggestionItem.innerHTML = `
+            <div style="font-weight: bold; color: #333;">${stock.symbol}</div>
+            <div style="font-size: 0.9em; color: #666;">${stock.name}</div>
+        `;
         
         suggestionItem.addEventListener('mouseenter', function() {
             this.style.backgroundColor = '#f8f9fa';
@@ -212,7 +227,7 @@ function showSearchSuggestions(suggestions, inputElement) {
         });
         
         suggestionItem.addEventListener('click', function() {
-            inputElement.value = symbol;
+            inputElement.value = stock.display;
             removeSearchSuggestions();
             inputElement.focus();
         });

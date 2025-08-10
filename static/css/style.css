@@ -677,6 +677,28 @@ body {
     margin-bottom: 10px;
 }
 
+/* Search Suggestions Styling */
+.search-suggestions {
+    border-radius: 10px !important;
+    border: 2px solid var(--primary-color) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+
+.suggestion-item {
+    padding: 15px !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    transition: all 0.2s ease !important;
+}
+
+.suggestion-item:hover {
+    background-color: var(--light-color) !important;
+    transform: translateX(5px);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none !important;
+}
+
 /* Responsive Design for New Pages */
 @media (max-width: 768px) {
     .contact-grid {
